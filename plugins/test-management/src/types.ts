@@ -21,7 +21,7 @@ import {
   type Ref,
   type Markup,
   TypedSpace,
-  CollaborativeDoc,
+  MarkupBlobRef,
   AttachedDoc,
   Timestamp
 } from '@hcengineering/core'
@@ -89,7 +89,7 @@ export interface TestSuite extends Doc {
 /** @public */
 export interface TestCase extends AttachedDoc<TestSuite, 'testCases', TestProject> {
   name: string
-  description: CollaborativeDoc
+  description: MarkupBlobRef | null
   type: TestCaseType
   priority: TestCasePriority
   status: TestCaseStatus
@@ -101,7 +101,7 @@ export interface TestCase extends AttachedDoc<TestSuite, 'testCases', TestProjec
 /** @public */
 export interface TestRun extends Doc {
   name: string
-  description: CollaborativeDoc
+  description: MarkupBlobRef | null
   dueDate?: Timestamp
   items?: CollectionSize<TestRunItem>
 }

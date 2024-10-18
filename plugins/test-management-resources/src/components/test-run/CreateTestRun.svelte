@@ -18,12 +18,12 @@
   import { Attachment } from '@hcengineering/attachment'
   import { AttachmentStyledBox } from '@hcengineering/attachment-resources'
   import { ObjectBox } from '@hcengineering/view-resources'
-  import core, { Data, Ref, generateId, makeCollaborativeDoc } from '@hcengineering/core'
+  import core, { Data, Ref, generateId, makeCollabId } from '@hcengineering/core'
   import { IntlString } from '@hcengineering/platform'
-  import { Card, SpaceSelector, getClient } from '@hcengineering/presentation'
+  import { Card, SpaceSelector, createMarkup, getClient } from '@hcengineering/presentation'
   import { TestRun, TestProject } from '@hcengineering/test-management'
   import { EditBox } from '@hcengineering/ui'
-  import { EmptyMarkup } from '@hcengineering/text'
+  import { EmptyMarkup, isEmptyMarkup } from '@hcengineering/text'
 
   import testManagement from '../../plugin'
   import ProjectPresenter from '../project/ProjectSpacePresenter.svelte'
@@ -36,7 +36,7 @@
 
   const object: Data<TestRun> = {
     name: '' as IntlString,
-    description: makeCollaborativeDoc(id, 'description')
+    description: null
   }
 
   let _space = space
@@ -47,6 +47,10 @@
   let attachments: Map<Ref<Attachment>, Attachment> = new Map<Ref<Attachment>, Attachment>()
 
   async function onSave () {
+    if (!isEmptyMarkup(description)) {
+      const target = makeCollabId(testManagement.class.TestRun, id, 'description')
+      object.description = await createMarkup(target, description)
+    }
     await client.createDoc(testManagement.class.TestRun, _space, object)
   }
 </script>
