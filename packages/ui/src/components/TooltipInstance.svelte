@@ -57,6 +57,7 @@
     right: '',
     width: '',
     height: '',
+    maxWidth: '',
     transform: '',
     visibility: 'hidden',
     classList: ''
@@ -71,6 +72,7 @@
       right: '',
       width: '',
       height: '',
+      maxWidth: '',
       transform: '',
       visibility: 'hidden',
       classList: ''
@@ -86,6 +88,7 @@
       width: '',
       height: '',
       transform: '',
+      maxWidth: '',
       visibility: 'visible',
       classList: ''
     }
@@ -140,6 +143,9 @@
             else dir = 'top'
           } else dir = $tooltip.direction
 
+          const left = rectAnchor.x + rectAnchor.width / 2
+          const maxWidth = Math.min(left, docWidth - left)
+
           if (dir === 'right') {
             options.top = rectAnchor.y + rectAnchor.height / 2 + 'px'
             options.left = `calc(${rectAnchor.right}px + .75rem)`
@@ -151,10 +157,12 @@
           } else if (dir === 'bottom') {
             options.top = `calc(${rectAnchor.bottom}px + .5rem)`
             options.left = rectAnchor.x + rectAnchor.width / 2 + 'px'
+            options.maxWidth = `calc(${maxWidth * 2}px - 1.5rem)`
             options.transform = 'translateX(-50%)'
           } else if (dir === 'top') {
             options.bottom = `calc(${docHeight - rectAnchor.y}px + .75rem)`
             options.left = rectAnchor.x + rectAnchor.width / 2 + 'px'
+            options.maxWidth = `calc(${maxWidth * 2}px - 1.5rem)`
             options.transform = 'translateX(-50%)'
           }
         }
@@ -356,6 +364,8 @@
     style:right={options.right}
     style:width={options.width}
     style:height={options.height}
+    style:max-width={options.maxWidth}
+    style:max-height={options.maxHeight}
     style:transform={options.transform}
     style:z-index={($modals.findIndex((t) => t.type === 'tooltip') ?? 1) + 10000}
   >
